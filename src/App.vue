@@ -1,28 +1,27 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <AppLayout></AppLayout>
   </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
-</script>
-
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  .app-topbar { background: black; color: white; padding: 5px 20px; font-size: 1em; }
+
+  .app-form { margin: 10px; }
+  .app-form__item { padding: 10px; border-top: 1px solid rgba(0,0,0,.15); border-right: 1px solid rgba(0,0,0,.15); border-left: 1px solid rgba(0,0,0,.15); }
+  .app-form__item:first-child { border-top-left-radius: 3px; border-top-right-radius: 3px; }
+  .app-form__item:last-child { border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; border-bottom: 1px solid rgba(0,0,0,.15); }
+
+  .app-list__item { margin: 0 10px; padding: 10px; border-top: 1px solid rgba(0,0,0,.15); }
+  .app-list__item:active + .app-list__item { border-color: transparent; }
+  .app-list__item:active { border-radius: 3px; color: rgba(255,255,255,.8); background: rgba(0,122,255,1); border-color: rgba(0,122,255,1); }
+  .app-list__item:first-child { border-color: transparent; }
 </style>
+
+
+<script>
+  import AppLayout from "./components/AppLayout.vue"
+  export default {
+    components: { AppLayout, }, 
+  }
+</script>
