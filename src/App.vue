@@ -5,9 +5,9 @@
 </template>
 
 <style>
-  .fade-enter-active { transition: opacity 1s; }
+  /* .fade-enter-active { transition: opacity 1s; }
   .fade-enter { opacity: 0; }
-  .fade-enter-to { opacity: 1; }
+  .fade-enter-to { opacity: 1; } */
   /* .fade-leave-active { transition: opacity 1s; }
   .fade-leave { opacity: 1; }
   .fade-leave-to { opacity: 0; } */

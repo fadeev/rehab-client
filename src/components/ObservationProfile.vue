@@ -1,35 +1,35 @@
 <template>
   <div>
-    <transition name="fade">
-      <div class="observation-profile" v-if="observation && patient">
-        <div class="observation-profile__h1">
-          <router-link style="color: rgba(0,122,255,1);" tag="div" :to="`/patient/${patient.primaryKey}`">
-            {{patient['ФИО']}}
-          </router-link>
-        </div>
-        <div class="observation-profile__h2">
-          Обследование
-        </div>
-        <div class="app-form">
-          <AppInput class="app-form__item" label="Дата" v-model="observation['Дата']"></AppInput>
-          <AppInput class="app-form__item" label="Комментарий" v-model="observation['Комментарий']"></AppInput>
-        </div>
-        <div class="observation-profile__h2">
-          Показатели
-        </div>
-        <div style="margin: 0 10px">
-          <div class="patient-profile__button" @click="indicatorAdd">
-            Новый показатель
-          </div>
-        </div>
-        <div class="app-form">
-          <div class="app-form__item" v-for="indicator in indicatorList" :key="indicator.primaryKey">
-            <div>{{indicator["Наименование"]}}</div>
-            <div>{{indicator["Описание"]}}</div>
-          </div>
+    <!-- <transition name="fade"> -->
+    <div class="observation-profile" v-if="observation && patient">
+      <div class="observation-profile__h1">
+        <router-link style="color: rgba(0,122,255,1);" tag="div" :to="`/patient/${patient.primaryKey}`">
+          {{patient['ФИО']}}
+        </router-link>
+      </div>
+      <div class="observation-profile__h2">
+        Обследование
+      </div>
+      <div class="app-form">
+        <AppInput class="app-form__item" label="Дата" v-model="observation['Дата']"></AppInput>
+        <AppInput class="app-form__item" label="Комментарий" v-model="observation['Комментарий']"></AppInput>
+      </div>
+      <div class="observation-profile__h2">
+        Показатели
+      </div>
+      <div style="margin: 0 10px">
+        <div class="patient-profile__button" @click="indicatorAdd">
+          Новый показатель
         </div>
       </div>
-    </transition>
+      <div class="app-form">
+        <div class="app-form__item" v-for="indicator in indicatorList" :key="indicator.primaryKey">
+          <div>{{indicator["Наименование"]}}</div>
+          <div>{{indicator["Описание"]}}</div>
+        </div>
+      </div>
+    </div>
+    <!-- </transition> -->
     <div :class="['sheet', {'sheet_not-visible': !sheet}]">
       <div style="position: relative; padding: 10px;">
         <div style="display: flex; align-items: center;">

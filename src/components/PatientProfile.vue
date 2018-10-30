@@ -1,39 +1,39 @@
 <template>
   <div>
-    <transition name="fade">
-      <div v-if="patient" class="patient-profile">
-        <div class="patient-profile__h1">
-          {{patient["ФИО"]}}
-        </div>
-        <router-link style="font-size: .7em; margin: 20px 20px; color: rgba(0,122,255,1)" tag="div" :to="'/'">
-          Вернуться в список пациентов
-        </router-link>
-        <div class="app-form">
-          <AppInput class="app-form__item" label="ФИО" v-model="patient['ФИО']"></AppInput>
-          <div class="app-form__item">
-            Пол
-            <select name="" id="" v-model="patient['Пол']">
-              <option value="Женский">Женский</option>
-              <option value="Мужской">Мужской</option>
-            </select>
-          </div>
-          <AppInput class="app-form__item" label="Дата рождения" v-model="patient['ДатаРождения']"></AppInput>
-        </div>
-        <div class="patient-profile__button" @click="submit">
-          Сохранить изменения
-        </div>
-        <div class="red patient-profile__h2">Обследования</div>
-        <div class="patient-profile__button" @click="observationAdd">
-          Добавить обследование
-        </div>
-        <AppButton></AppButton>
-        <div class="app-list__item" v-for="observation in observationList" :key="observation.primaryKey">
-          <router-link tag="div" :to="`/patient/${patient.primaryKey}/observation/${observation.primaryKey}`">
-            № {{observation['Номер']}} от {{observation['Дата'].substring(0,10)}}
-          </router-link>
-        </div>
+    <!-- <transition name="fade"> -->
+    <div v-if="patient" class="patient-profile">
+      <div class="patient-profile__h1">
+        {{patient["ФИО"]}}
       </div>
-    </transition>
+      <router-link style="font-size: .7em; margin: 20px 20px; color: rgba(0,122,255,1)" tag="div" :to="'/'">
+        Вернуться в список пациентов
+      </router-link>
+      <div class="app-form">
+        <AppInput class="app-form__item" label="ФИО" v-model="patient['ФИО']"></AppInput>
+        <div class="app-form__item">
+          Пол
+          <select name="" id="" v-model="patient['Пол']">
+            <option value="Женский">Женский</option>
+            <option value="Мужской">Мужской</option>
+          </select>
+        </div>
+        <AppInput class="app-form__item" label="Дата рождения" v-model="patient['ДатаРождения']"></AppInput>
+      </div>
+      <div class="patient-profile__button" @click="submit">
+        Сохранить изменения
+      </div>
+      <div class="red patient-profile__h2">Обследования</div>
+      <div class="patient-profile__button" @click="observationAdd">
+        Добавить обследование
+      </div>
+      <AppButton></AppButton>
+      <div class="app-list__item" v-for="observation in observationList" :key="observation.primaryKey">
+        <router-link tag="div" :to="`/patient/${patient.primaryKey}/observation/${observation.primaryKey}`">
+          № {{observation['Номер']}} от {{observation['Дата'].substring(0,10)}}
+        </router-link>
+      </div>
+    </div>
+    <!-- </transition> -->
   </div>
 </template>
 
