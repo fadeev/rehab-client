@@ -1,42 +1,45 @@
 <template>
   <div>
-    <div v-if="patient" class="patient-profile">
-      <router-link tag="div" :to="'/'" class="app-topbar">
-        Вернуться в список пациентов
-      </router-link>
-      <div class="patient-profile__h1">
-        {{patient["ФИО"]}}
-      </div>
-      <div class="app-form">
-        <AppInput class="app-form__item" label="ФИО" v-model="patient['ФИО']"></AppInput>
-        <div class="app-form__item">
-          Пол
-          <select name="" id="" v-model="patient['Пол']">
-            <option value="Женский">Женский</option>
-            <option value="Мужской">Мужской</option>
-          </select>
+    <transition name="fade">
+      <div v-if="patient" class="patient-profile">
+        <div class="patient-profile__h1">
+          {{patient["ФИО"]}}
         </div>
-        <AppInput class="app-form__item" label="Дата рождения" v-model="patient['ДатаРождения']"></AppInput>
-      </div>
-      <div class="patient-profile__button" @click="submit">
-        Сохранить изменения
-      </div>
-      <div class="red patient-profile__h2">Обследования</div>
-      <div class="patient-profile__button" @click="observationAdd">
-        Добавить обследование
-      </div>
-      <AppButton></AppButton>
-      <div class="app-list__item" v-for="observation in observationList" :key="observation.primaryKey">
-        <router-link tag="div" :to="`/patient/${patient.primaryKey}/observation/${observation.primaryKey}`">
-          № {{observation['Номер']}} от {{observation['Дата'].substring(0,10)}}
+        <router-link style="font-size: .7em; margin: 20px 20px; color: rgba(0,122,255,1)" tag="div" :to="'/'">
+          Вернуться в список пациентов
         </router-link>
+        <div class="app-form">
+          <AppInput class="app-form__item" label="ФИО" v-model="patient['ФИО']"></AppInput>
+          <div class="app-form__item">
+            Пол
+            <select name="" id="" v-model="patient['Пол']">
+              <option value="Женский">Женский</option>
+              <option value="Мужской">Мужской</option>
+            </select>
+          </div>
+          <AppInput class="app-form__item" label="Дата рождения" v-model="patient['ДатаРождения']"></AppInput>
+        </div>
+        <div class="patient-profile__button" @click="submit">
+          Сохранить изменения
+        </div>
+        <div class="red patient-profile__h2">Обследования</div>
+        <div class="patient-profile__button" @click="observationAdd">
+          Добавить обследование
+        </div>
+        <AppButton></AppButton>
+        <div class="app-list__item" v-for="observation in observationList" :key="observation.primaryKey">
+          <router-link tag="div" :to="`/patient/${patient.primaryKey}/observation/${observation.primaryKey}`">
+            № {{observation['Номер']}} от {{observation['Дата'].substring(0,10)}}
+          </router-link>
+        </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
 <style scoped>
-  .patient-profile__h1 { margin: 20px; font-size: 1.25em;}
+  .patient-profile { }
+  .patient-profile__h1 { padding-top: 20px; margin: 0 20px 20px 20px; font-size: 1.25em;}
   .patient-profile__h2 { margin: 20px; font-weight: 600; }
   .patient-profile__button { color: rgba(0,122,255,1); border-radius: 3px; margin: 10px; padding: .5em 1em; text-align: center; border: 1px solid rgba(0,122,255,1); }
   .patient-profile__button:active { opacity: .75; }
@@ -55,21 +58,21 @@
         observationList: null,
       }
     },
-    async created() {
-      this.patinetGet()
+    async mounted() {
+      this.patientGet()
       this.$store.dispatch("patientObservationListGet", this.$route.params.patient_id).then(data => {
         this.observationList = data
       })
     },
     methods: {
-      patinetGet() {
+      patientGet() {
         this.$store.dispatch("patientGet", this.$route.params.patient_id).then(data => {
-          this.patient = data
+          this.patient = Object.assign({}, data)
         })
       },
       submit() {
         this.$store.dispatch("patientUpdate", this.patient).then(() => {
-          this.patinetGet()
+          this.patientGet()
         })
       },
       observationAdd() {
