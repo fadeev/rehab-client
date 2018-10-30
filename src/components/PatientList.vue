@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="patient-list">
-      <div class="patient-search" @click="goHome">
+      <!-- <div class="patient-search" @click="goHome">
         <input placeholder="Поиск пациента по имени" class="patient-search__input" type="text" v-model="search">
-      </div>
+      </div> -->
       <transition name="fade">
         <div v-if="patientList">
           <router-link class="app-list__item" v-for="patient in patientList" :key="patient.primaryKey" tag="div" v-if="isMatched(patient)" :to="`/patient/${patient.primaryKey}`">

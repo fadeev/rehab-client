@@ -9,10 +9,10 @@ Vue.use(VueRouter)
 
 export default new VueRouter({
   routes: [
-    // {
-    //   path: '/',
-    //   component: PatientList,
-    // },
+    {
+      path: '/',
+      component: PatientList,
+    },
     {
       path: '/patient/:patient_id',
       component: PatientProfile,

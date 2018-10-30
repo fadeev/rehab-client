@@ -1,14 +1,16 @@
 <template>
   <div>
-    <div :class="['app-layout', {content: hasContent, 'is-home': isHome}]">
-      <!-- <router-view :key="$route.name + ($route.params.patient_id || '')"></router-view> -->
+    <div>
+      <router-view></router-view>
+    </div>
+    <!-- <div :class="['app-layout', {content: hasContent, 'is-home': isHome}]">
       <div class="app-sidebar">
         <PatientList></PatientList>
       </div>
       <div class="app-content">
         <router-view :key="$route.name + ($route.params.patient_id || '')"></router-view>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
