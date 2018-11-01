@@ -88,11 +88,10 @@
 
 <script>
   import AppInput from "./AppInput.vue"
-  import AppButton from "./AppButton.vue"
   import { filter } from "lodash"
 
   export default {
-    components: { AppInput, AppButton, },
+    components: { AppInput, },
     data: function() {
       return {
         patient: null,

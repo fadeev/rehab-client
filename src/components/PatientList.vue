@@ -1,49 +1,63 @@
 <template>
   <div>
     <div class="patient-list">
-      <div class="patient-search" @click="goHome">
-        <input placeholder="Поиск пациента по имени" class="patient-search__input" type="text" v-model="search">
+
+      <!-- <transition name="fade"> v-if="isMatched(patient)" -->
+      <router-link class="app-list__item" v-for="patient in patientListFilteredShown" :key="patient.primaryKey" tag="div" :to="`/patient/${patient.primaryKey}`">
+        {{patient["ФИО"]}}
+        <div style="font-size: .75em; color: #aaa;">{{patient["ДатаРождения"].substring(0,4)}}</div>
+      </router-link>
+      <div class="app-list__item" v-if="!patientShowAll && patientListFiltered.length > 0" @click="patientShowAll = true">
+        Показать всех пациентов
       </div>
-      <transition name="fade">
-        <div v-if="patientList">
-          <router-link class="app-list__item" v-for="patient in patientList" :key="patient.primaryKey" tag="div" v-if="isMatched(patient)" :to="`/patient/${patient.primaryKey}`">
-            {{patient["ФИО"]}}
-            <div style="font-size: .75em; color: #aaa;">{{patient["ДатаРождения"].substring(0,4)}}</div>
-          </router-link>
-        </div>
-      </transition>
+      <!-- </transition> -->
     </div>
   </div>
 </template>
 
 <style scoped>
+  .patient-list { width: 100%; }
   .patient-search { padding-top: 10px; margin: 0 10px 10px 10px; position: relative; }
   .patient-search__input { box-sizing: border-box; width: 100%; padding: 10px; border-radius: 3px; border: 1px solid rgba(0,0,0,.2); }
 </style>
 
 <script>
+  import { mapState } from 'vuex'
+  import store from "../store.js"
+
   export default {
     data: function() {
       return {
         search: null,
-        patientList: null
+        patientShowAll: null,
       }
     },
-    mounted() {
-      this.patientListGet()
+    beforeRouteEnter(to, from, next) {
+      store.dispatch("patientListGet")
+      next()
     },
-    methods: {
-      patientListGet() {
-        this.$store.dispatch("patientListGet").then(data => {
-          this.patientList = data
+    watch: {
+      patientListFiltered() {
+        this.patientShowAll = (this.patientListFiltered.length < 100)
+      },
+    },
+    computed: {
+      patientListFiltered() {
+        return this.patientList.filter((patient) => {
+          return patient['ФИО'].toLowerCase().indexOf((this.patientSearch || '').toLowerCase()) != -1
         })
       },
-      isMatched(patient) {
-        if (!this.search) return true
-        return (new RegExp(this.search.toLowerCase())).test(patient['ФИО'].toLowerCase())
+      patientListFilteredShown() {
+        return (this.patientShowAll ? this.patientListFiltered : this.patientListFiltered.slice(1,100))
       },
-      goHome() {
-        this.$router.push('/')
+      ...mapState([
+        'patientSearch', 'patientList',
+      ])
+    },
+    methods: {
+      isMatched(patient) {
+        if (!this.patientSearch) return true
+        return (new RegExp(this.patientSearch.toLowerCase())).test(patient['ФИО'].toLowerCase())
       },
     },
   }

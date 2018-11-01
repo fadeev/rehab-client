@@ -16,7 +16,6 @@
   .app-input_is-expanded .app-input__label { transform: scale(.7); }
 </style>
 
-
 <script>
   export default {
     props: [ "value", "label", ],

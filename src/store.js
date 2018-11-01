@@ -9,6 +9,7 @@ const url = "http://localhost:3000"
 export default new Vuex.Store({
   strict: true,
   state: {
+    patientSearch: null,
     patientList: [],
   },
   getters: {
@@ -17,6 +18,9 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    patientSearchUpdate({commit, state}, patientSearch) {
+      commit("patientSearchUpdate", patientSearch)
+    },
     patientGet({commit, state}, id) {
       return new Promise((resolve, reject) => {
         axios.get(`${url}/patient/${id}`).then(({data}) => {
@@ -27,6 +31,7 @@ export default new Vuex.Store({
     patientListGet({commit, state}) {
       return new Promise((resolve, reject) => {
         axios.get(`${url}/patient`).then(({data}) => {
+          commit("patientListUpdate", data.data)
           resolve(data.data)
         })
       })
@@ -89,11 +94,17 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    patientSearchUpdate(state, patientSearch) {
+      state.patientSearch = patientSearch
+    },
     patientListUpdate(state, patientList) {
       state.patientList = patientList
     },
     patientCreate(state, patient) {
 
+    },
+    patientListUpdate(state, patientList) {
+      state.patientList = patientList
     },
   },
 })

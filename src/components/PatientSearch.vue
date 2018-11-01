@@ -1,23 +1,17 @@
 <template>
   <div>
-    <div class="patient-search">
-      <input placeholder="Поиск пациента по имени" class="patient-search__input" type="text" v-model="search">
-    </div>
+    <PatientSearchInput></PatientSearchInput>
+    <TransitionPage>
+      <router-view></router-view>
+    </TransitionPage>
   </div>
 </template>
 
-<style scoped>
-  .patient-search { padding-top: 10px; margin: 0 10px 10px 10px; position: relative; }
-  .patient-search__input { box-sizing: border-box; width: 100%; padding: 10px; border-radius: 3px; border: 1px solid rgba(0,0,0,.2); }
-</style>
-
 <script>
+  import PatientSearchInput from "./PatientSearchInput.vue"
+  import TransitionPage from "./TransitionPage.vue"
+
   export default {
-    data: function() {
-      return {
-        search: null,
-        patientList: null
-      }
-    },
+    components: { PatientSearchInput, TransitionPage, },
   }
 </script>
