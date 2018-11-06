@@ -10,7 +10,7 @@
   .app-form__item:first-child { border-top-left-radius: 3px; border-top-right-radius: 3px; }
   .app-form__item:last-child { border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; border-bottom: 1px solid rgba(0,0,0,.2); }
 
-  .app-list__item { margin: 0 10px; padding: 10px; border-top: 1px solid rgba(0,0,0,.2); }
+  .app-list__item { display: block; margin: 0 10px; padding: 10px; border-top: 1px solid rgba(0,0,0,.2); }
   .app-list__item:active + .app-list__item { border-color: transparent; }
   .app-list__item:active { border-radius: 3px; color: rgba(255,255,255,.8); background: rgba(0,122,255,1); border-color: rgba(0,122,255,1); }
   .app-list__item:first-child { border-color: transparent; }

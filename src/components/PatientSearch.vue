@@ -12,6 +12,9 @@
   import TransitionPage from "./TransitionPage.vue"
 
   export default {
-    components: { PatientSearchInput, TransitionPage, },
+    components: {
+      PatientSearchInput,
+      TransitionPage,
+    },
   }
 </script>

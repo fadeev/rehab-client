@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="patient-search">
-      <input @click="$router.push('/')" placeholder="Поиск пациента по имени" class="patient-search__input" type="text" v-model="patientSearch">
+      <input @click="$router.push('/patient')"
+             placeholder="Поиск пациента по имени"
+             class="patient-search__input"
+             type="text"
+             @input="search($event.target.value)"
+             :value="patientSearch">
     </div>
   </div>
 </template>
@@ -13,15 +18,15 @@
 
 <script>
   export default {
-    data: function() {
-      return {
-        patientSearch: this.$store.state.patientSearch,
-      }
-    },
-    watch: {
+    computed: {
       patientSearch() {
-        this.$store.dispatch("patientSearchUpdate", this.patientSearch)
+        return this.$store.state.patientSearch
       },
     },
+    methods: {
+      search(x) {
+        this.$store.dispatch("patientSearchUpdate", x)
+      }
+    }
   }
 </script>

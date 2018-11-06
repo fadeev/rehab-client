@@ -9,7 +9,7 @@
 <script>
   // https://markus.oberlehner.net/blog/vue-router-page-transitions/
 
-  const DEFAULT_TRANSITION = 'fade'
+  const DEFAULT_TRANSITION = 'slide'
   const DEFAULT_TRANSITION_MODE = 'out-in';
 
   export default {

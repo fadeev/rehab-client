@@ -1,44 +1,36 @@
 <template>
   <div>
-    <div :class="['app-input', {'app-input_is-expanded': isExpanded}]">
-      <div class="app-input__label" @click="click">
-        {{label}}
+    <div :class="['app-input', {'app-input--expanded': expanded}]">
+      <div style="position: relative">
+        <div class="app-input__label" @click="$refs.input.focus()">
+          {{label}}
+        </div>
+        <input @focus="expanded = true" ref="input" @blur="expanded = null" class="app-input__input" type="text" :value="value" @input="valueUpdate">
       </div>
-      <input @blur="blur" ref="input" class="app-input__input" type="text" :value="value" @input="$emit('input', $event.target.value)">
     </div>
   </div>
 </template>
 
 <style scoped>
-  .app-input__input { transition: all .5s; opacity: 0; display: block; border: none; width: 100%; height: 0; line-height: 0; padding: 0; }
-  .app-input__label { transition: all .5s; transform-origin: top left; }
-  .app-input_is-expanded .app-input__input { opacity: 1; height: 1em; line-height: 1; }
-  .app-input_is-expanded .app-input__label { transform: scale(.7); }
+  .app-input { border-radius: 5px; padding: 10px; transition: background-color .25s, color .25s; }
+  .app-input--expanded { background: rgb(255, 253, 112); color: rgb(43, 32, 0); }
+  /* .app-input__label1 { background: green; }
+  .app-input__input1 { background: red; } */
+  .app-input__input { text-align: right; max-width: 50%; overflow-x: hidden; right: 0; width: initial; position: absolute; top: 0; padding: 0; border: none; }
 </style>
+
 
 <script>
   export default {
-    props: [ "value", "label", ],
+    props: [ 'value', 'label', ],
     data: function() {
       return {
-        isExpanded: null,
+        expanded: null,
       }
     },
-    watch: {
-      value: {
-        handler() {
-          if (this.value) this.isExpanded = true
-        },
-        immediate: true,
-      },
-    },
     methods: {
-      click() {
-        this.isExpanded = true;
-        this.$refs.input.focus()
-      },
-      blur() {
-        if (!this.value) this.isExpanded = null
+      valueUpdate(e) {
+        this.$emit('input', e.target.value);
       },
     },
   }
