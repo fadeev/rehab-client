@@ -4,11 +4,11 @@
       <AppInputInline label="ФИО" large v-model="specialist['ФИО']"></AppInputInline>
       <AppInput label="Код" v-model="specialist['Код']" style="margin: 0 10px"></AppInput>
       <AppInput label="Логин" v-model="specialist['Логин']" style="margin: 0 10px"></AppInput>
-      <AppInputInline label="Примечание" v-model="specialist['Примечение']"></AppInputInline>
+      <AppInputInline label="Примечание" v-model="specialist['Примечание']"></AppInputInline>
       <AppInputSelect label="Должность" placeholder="Выбрать" v-model="specialist['Должность_m0']" :options="jobList" key-field='Наименование' value-field='primaryKey'></AppInputSelect>
       <AppInputSelect label="Подразделение" placeholder="Выбрать" v-model="specialist['Подразделение']" :options="divisionList" key-field='Наименование' value-field='primaryKey'></AppInputSelect>
       <AppInputToogle label="Актуально" v-model="specialist['Актуально']" style="margin: 0 10px"></AppInputToogle>
-      <PatientButton @click="submit" :visible="specialistModified"></PatientButton>
+      <SubmitButton @click="submit" :visible="specialistModified"></SubmitButton>
     </div>
   </div>
 </template>
@@ -18,7 +18,7 @@
   import AppInput from "./AppInput.vue"
   import AppInputToogle from "./AppInputToogle.vue"
   import AppInputSelect from "./AppInputSelect.vue"
-  import PatientButton from "./PatientButton.vue"
+  import SubmitButton from "./SubmitButton.vue"
 
   export default {
     components: {
@@ -26,7 +26,7 @@
       AppInput,
       AppInputToogle,
       AppInputSelect,
-      PatientButton,
+      SubmitButton,
     },
     data: function() {
       return {

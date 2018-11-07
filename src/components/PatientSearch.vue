@@ -1,6 +1,7 @@
 <template>
   <div>
-    <PatientSearchInput></PatientSearchInput>
+    <!-- <app-header></app-header> -->
+    <PatientSearchInput ref="search"></PatientSearchInput>
     <TransitionPage>
       <router-view></router-view>
     </TransitionPage>
@@ -10,11 +11,13 @@
 <script>
   import PatientSearchInput from "./PatientSearchInput.vue"
   import TransitionPage from "./TransitionPage.vue"
+  import AppHeader from "./AppHeader.vue"
 
   export default {
     components: {
       PatientSearchInput,
       TransitionPage,
+      AppHeader,
     },
   }
 </script>

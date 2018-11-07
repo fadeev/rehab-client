@@ -8,6 +8,9 @@
         <router-link :to="'/specialist'" tag='div' class="home-screen__list__item">
           Сотрудники
         </router-link>
+        <router-link :to="'/job'" tag='div' class="home-screen__list__item">
+          Должности
+        </router-link>
       </div>
     </div>
   </div>

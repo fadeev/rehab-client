@@ -9,13 +9,14 @@ import HomeScreen from "./components/HomeScreen.vue"
 import SpecialistIndex from "./components/SpecialistIndex.vue"
 import SpecialistList from "./components/SpecialistList.vue"
 import SpecialistProfile from "./components/SpecialistProfile.vue"
+import JobIndex from "./components/JobIndex.vue"
 
 Vue.use(VueRouter)
 
 export default new VueRouter({
   routes: [
     {
-      path: '/home',
+      path: '/',
       component: HomeScreen,
     },
     {
@@ -56,6 +57,11 @@ export default new VueRouter({
           meta: { transitionName: 'slide' },
         }
       ],
+    },
+    {
+      path: '/job',
+      component: JobIndex,
+      meta: { transitionName: 'slide' },
     },
   ],
   mode: "history",

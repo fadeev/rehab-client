@@ -14,7 +14,7 @@
           <PatientInputPhone style="margin: 10px 0;" label="Телефон" v-model="patient['Телефон']"></PatientInputPhone>
         </div>
       </AppTabGroup>
-      <PatientButton @click="submit" :visible="patientModified"></PatientButton>
+      <SubmitButton @click="submit" :visible="patientModified"></SubmitButton>
       <div class="patient-profile__h2">
         <div>
           Обследования
@@ -34,7 +34,7 @@
 
 <style scoped>
   .patient-profile__h2 { display: flex; justify-content: space-between; align-items: center; margin: 30px 20px 15px; font-weight: 600; }
-  .patient-profile__h2__icon { transition: all .25s; fill: white; background: linear-gradient(45deg, rgb(52, 150, 255), rgb(0, 27, 182)); padding: 5px 3px 3px 5px; border-radius: 1000px; }
+  .patient-profile__h2__icon { transition: all .25s; fill: white; background: linear-gradient(45deg, rgb(52, 150, 255), rgb(0, 27, 182)); padding: 5px 4px 4px 5px; border-radius: 1000px; }
   .patient-profile__h2__icon:active { transform: scale(.9); }
 </style>
 
@@ -46,7 +46,7 @@
   import PatientInputDate from "./PatientInputDate.vue"
   import PatientInputGender from "./PatientInputGender.vue"
   import PatientInputPhone from "./PatientInputPhone.vue"
-  import PatientButton from "./PatientButton.vue"
+  import SubmitButton from "./SubmitButton.vue"
   import TransitionPage from "./TransitionPage.vue"
 
   export default {
@@ -57,7 +57,7 @@
       PatientInputGender,
       AppInputInline,
       PatientInputPhone,
-      PatientButton,
+      SubmitButton,
       TransitionPage,
     },
     data: function() {

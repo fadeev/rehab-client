@@ -37,10 +37,12 @@
   import { mapState } from 'vuex'
   import store from "../store.js"
   import AppIcon from "./AppIcon.vue"
+  import AppButtonFloating from "./AppButtonFloating.vue"
 
   export default {
     components: {
       AppIcon,
+      AppButtonFloating,
     },
     data: function() {
       return {

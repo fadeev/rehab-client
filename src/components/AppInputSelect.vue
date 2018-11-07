@@ -13,6 +13,9 @@
         </span>
       </div>
     </div>
+    <transition name="fade">
+      <div class="overlay" v-if="sheet"></div>
+    </transition>
     <div :class="['sheet', {'sheet--visible': sheet}]">
       <div class="sheet__header">
         <input ref="search" class="sheet__header__input" :placeholder="label" v-model="search">
@@ -33,6 +36,12 @@
   .app-input__input { text-align: right; }
   .app-input--expanded { background: rgb(255, 253, 112); color: rgb(43, 32, 0); }
   .app-input__placeholder { color: rgba(0,0,0,.35); }
+
+  .overlay { background: rgba(0,0,0,1); top: 0; left: 0; bottom: 0; right: 0; position: fixed; }
+
+  .fade-enter-active, .fade-leave-active { transition: opacity .75s; }
+  .fade-enter, .fade-leave-to { opacity: 0; }
+  .fade-enter-to, .fade-leave { opacity: .5; }
 
   .sheet { overflow-y: scroll; transition: transform .75s cubic-bezier(0.55, 0, 0.1, 1); transform: translateY(100vh); left: 0; right: 0; background: white; bottom: 0; position: fixed; top: 0; }
   .sheet--visible { transform: translateY(0); }
@@ -83,7 +92,8 @@
       clear() {
         if (this.search) {
           this.search = null
-          this.$refs.search.focus()
+          if (this.$refs.search)
+            this.$refs.search.focus()
         } else {
           this.sheet = null
         }
