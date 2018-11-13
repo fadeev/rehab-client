@@ -2,7 +2,7 @@
   <div>
     <div class="specialist-list">
       <router-link class="app-list__item" tag="div" :to="`/specialist/${specialist['primaryKey']}`" v-for="specialist in specialistListFiltered" :key="specialist['primaryKey']">
-        {{specialist['ФИО'] || '-'}}
+        {{specialist['ФИО'] || 'n/a'}}
       </router-link>
     </div>
   </div>
@@ -13,17 +13,22 @@
   import store from "../store.js"
 
   export default {
+    props: {
+      search: {
+        type: String,
+      },
+    },
     beforeRouteEnter(to, from, next) {
       store.dispatch("specialistListGet")
       next()
     },
     computed: {
       ...mapState([
-        'specialistSearch', 'specialistList',
+        'specialistList',
       ]),
       specialistListFiltered() {
         return this.specialistList.filter((specialist) => {
-          return (specialist['ФИО'] || '').toLowerCase().indexOf((this.specialistSearch || '').toLowerCase()) != -1
+          return (specialist['ФИО'] || '').toLowerCase().indexOf((this.search || '').toLowerCase()) != -1
         })
       },
       specialistListFilteredShown() {

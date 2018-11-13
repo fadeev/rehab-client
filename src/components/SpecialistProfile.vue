@@ -1,12 +1,12 @@
 <template>
   <div>
     <div v-if="specialist" class="specialist-profile">
-      <AppInputInline label="ФИО" large v-model="specialist['ФИО']"></AppInputInline>
+      <AppInputInline style="margin: 0 10px" label="ФИО" large v-model="specialist['ФИО']"></AppInputInline>
       <AppInput label="Код" v-model="specialist['Код']" style="margin: 0 10px"></AppInput>
       <AppInput label="Логин" v-model="specialist['Логин']" style="margin: 0 10px"></AppInput>
-      <AppInputInline label="Примечание" v-model="specialist['Примечание']"></AppInputInline>
-      <AppInputSelect label="Должность" placeholder="Выбрать" v-model="specialist['Должность_m0']" :options="jobList" key-field='Наименование' value-field='primaryKey'></AppInputSelect>
-      <AppInputSelect label="Подразделение" placeholder="Выбрать" v-model="specialist['Подразделение']" :options="divisionList" key-field='Наименование' value-field='primaryKey'></AppInputSelect>
+      <AppInputInline label="Примечание" style="margin: 0 10px" v-model="specialist['Примечание']"></AppInputInline>
+      <AppInputSelect label="Должность" style="margin: 0 10px" placeholder="Выбрать" v-model="specialist['Должность_m0']" :options="jobList" key-field='Наименование' value-field='primaryKey'></AppInputSelect>
+      <AppInputSelect label="Подразделение" style="margin: 0 10px" placeholder="Выбрать" v-model="specialist['Подразделение']" :options="divisionList" key-field='Наименование' value-field='primaryKey'></AppInputSelect>
       <AppInputToogle label="Актуально" v-model="specialist['Актуально']" style="margin: 0 10px"></AppInputToogle>
       <SubmitButton @click="submit" :visible="specialistModified"></SubmitButton>
     </div>

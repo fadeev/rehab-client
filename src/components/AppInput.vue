@@ -5,7 +5,7 @@
         <div class="app-input__label" @click="$refs.input.focus()">
           {{label}}
         </div>
-        <input @focus="expanded = true" ref="input" @blur="expanded = null" class="app-input__input" type="text" :value="value" @input="valueUpdate">
+        <input :placeholder="placeholder" @focus="expanded = true" ref="input" @blur="expanded = null" class="app-input__input" type="text" :value="value" @input="valueUpdate">
       </div>
     </div>
   </div>
@@ -22,7 +22,19 @@
 
 <script>
   export default {
-    props: [ 'value', 'label', ],
+    props: {
+      value: {
+        type: [String, Number],
+      },
+      label: {
+        type: String,
+        default: 'Значение',
+      },
+      placeholder: {
+        type: String,
+        default: 'Текст',
+      }
+    },
     data: function() {
       return {
         expanded: null,

@@ -2,16 +2,28 @@
   <div>
     <div v-if="patient" class="patient-profile">
       <router-view></router-view>
-      <AppInputInline large style="margin-bottom: 20px;" v-model="patient['ФИО']"></AppInputInline>
+      <AppInputInline label="ФИО" large style="margin: 0 10px 20px;" v-model="patient['ФИО']"></AppInputInline>
       <AppTabGroup>
         <AppIcon slot="tab" icon="profile"></AppIcon>
         <AppIcon slot="tab" icon="document"></AppIcon>
         <AppIcon slot="tab" icon="map"></AppIcon>
         <AppIcon slot="tab" icon="doctor"></AppIcon>
-        <div slot="item" style="margin: 0 20px">
-          <PatientInputDate style="margin: 10px 0;" label="Год рождения" v-model="patient['ДатаРождения']"></PatientInputDate>
-          <PatientInputGender style="margin: 10px 0;" label="Пол" v-model="patient['Пол']"></PatientInputGender>
-          <PatientInputPhone style="margin: 10px 0;" label="Телефон" v-model="patient['Телефон']"></PatientInputPhone>
+        <div slot="item" style="margin: 0 10px">
+          <app-input-date label="Год рождения" v-model="patient['ДатаРождения']"/>
+          <app-input label="Телефон" placeholder="+7 123 4567890" v-model="patient['Телефон']"/>
+          <app-input-select label="Пол"
+                            key-field="value"
+                            value-field="value"
+                            placeholder="Выбрать"
+                            v-model="patient['Пол']"
+                            :options="[{value: 'Мужской'}, {value: 'Женский'}]"/>
+        </div>
+        <div slot="item">
+          <app-input style="margin: 0 10px" label="Паспорт" placeholder="Номер" v-model="patient['Паспорт']"/>
+        </div>
+        <div slot="item">
+          <app-input style="margin: 0 10px" label="Адрес" v-model="patient['АдресПроп']"/>
+          <app-input style="margin: 0 10px" label="Квартира" v-model="patient['Квартира']"/>
         </div>
       </AppTabGroup>
       <SubmitButton @click="submit" :visible="patientModified"></SubmitButton>
@@ -43,28 +55,29 @@
   import AppTabGroup from "./AppTabGroup.vue"
   import AppIcon from "./AppIcon.vue"
   import AppInputInline from "./AppInputInline.vue"
-  import PatientInputDate from "./PatientInputDate.vue"
-  import PatientInputGender from "./PatientInputGender.vue"
-  import PatientInputPhone from "./PatientInputPhone.vue"
+  import AppInput from "./AppInput.vue";
+  import AppInputDate from "./AppInputDate.vue"
   import SubmitButton from "./SubmitButton.vue"
   import TransitionPage from "./TransitionPage.vue"
+  import AppInputSelect from "./AppInputSelect.vue";
 
   export default {
     components: {
       AppTabGroup,
       AppIcon,
-      PatientInputDate,
-      PatientInputGender,
       AppInputInline,
-      PatientInputPhone,
       SubmitButton,
       TransitionPage,
+      AppInput,
+      AppInputSelect,
+      AppInputDate,
     },
     data: function() {
       return {
-        patient: null,
+        patient: {},
         observationList: null,
         patientModified: null,
+        new: null,
       }
     },
     watch: {
@@ -76,24 +89,32 @@
         deep: true,
       },
     },
-    async mounted() {
+    async created() {
       this.patientGet()
       this.patientObservationListGet()
     },
     methods: {
       patientGet() {
-        this.$store.dispatch("patientGet", this.$route.params.patient_id).then(data => {
-          this.patient = Object.assign({}, data)
-        })
+        this.$store.dispatch("patientGet", this.$route.params.patient_id)
+          .then(({data}) => {
+            this.patient = Object.assign({}, data.data)
+          }, () => {
+            this.new = true
+          })
       },
       patientObservationListGet() {
         this.$store.dispatch("patientObservationListGet", this.$route.params.patient_id).then(data => {
           this.observationList = Object.assign({}, data)
+        }).catch(error => {
         })
       },
       submit() {
-        this.$store.dispatch("patientUpdate", this.patient).then(() => {
-          this.patientGet()
+        this.$store.dispatch((this.new ? "patientCreate" : 'patientUpdate'), this.patient).then(data => {
+          if (this.new) {
+            this.$router.push(`/patient/${data['primaryKey']}`)
+          } else {
+            this.patientGet()
+          }
         })
       },
       observationAdd() {

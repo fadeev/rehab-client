@@ -9,45 +9,29 @@
       <div class="observation-profile__h2">
         Обследование
       </div>
-      <div style="margin: 0 20px">
-        <PatientInputDate style="margin: 10px 0;" label="Дата" v-model="patient['ДатаРождения']"></PatientInputDate>
-        <AppInputText style="margin: 10px 0;" label="Комментарий" v-model="patient['Комментарий']"></AppInputText>
+      <div style="margin: 0 10px">
+        <app-input-date label="Дата" v-model="patient['ДатаРождения']"/>
+        <app-input-inline v-model="patient['Комментарий']" label="Комментарий"/>
       </div>
       <div class="patient-profile__h2">
         <div>
           Показатели
         </div>
-        <!-- <div @click="indicatorAdd">
-          <AppIcon class="patient-profile__h2__icon" icon='plus'></AppIcon>
-        </div> -->
       </div>
-      <div class="app-form">
-        <div class="app-form__item" v-for="indicator in indicatorAttributeList" :key="indicator.primaryKey">
-          <div>{{indicator["Наименование"]}}</div>
+      <div>
+        <div v-for="indicator in indicatorAttributeListValues" :key="indicator.primaryKey" style="margin: 0 20px; border-bottom: 1px solid rgba(0,0,0,.25);">
+          <app-input-select-indicator :label="indicator['Наименование']"
+                                      :options="indicator['Характеристики']"
+                                      key-field='Описание'
+                                      v-model="indicator['ЗначениеПоказателя']"
+                                      value-field='primaryKey'
+                                      placeholder="Выбрать"/>
           <div v-for="attribute in indicator['Характеристики']" :key="attribute['primaryKey']">
-            {{attribute['Описание']}}
           </div>
         </div>
       </div>
+      <submit-button :visible="modified" @click="submit"/>
     </div>
-    <!-- <div :class="['sheet', {'sheet_not-visible': !sheet}]">
-      <div style="position: relative; padding: 10px;">
-        <div style="display: flex; align-items: center;">
-          <input ref="attribute-search" class="sheet__input" v-model="search" type="text" placeholder="Поиск показателя">
-          <div @click="sheetClose" style="width: 20px; padding: 0 10px;">✕</div>
-        </div>
-      </div>
-      <div class="app-list" v-if="!indicatorCurrent">
-        <div class="app-list__item" @click="indicatorCurrentSet(indicator)" v-if="isMatched(indicator)" v-for="indicator in indicatorAllList" :key="indicator.primaryKey">
-          {{indicator["Наименование"]}}
-        </div>
-      </div>
-      <div class="app-list attribute" v-if="indicatorCurrent">
-        <div class="app-list__item" v-if="attribute['ИнтегральныйПоказатель'] == indicatorCurrent.primaryKey" v-for="attribute in attributeList" :key="attribute.primaryKey">
-          {{attribute['Описание']}} {{attribute['Значение']}}
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -62,101 +46,91 @@
   .sheet__input { box-sizing: border-box; width: 100%; padding: 10px; border-radius: 3px; border: 1px solid rgba(0,0,0,.2); }
 
   .patient-profile__h2 { display: flex; justify-content: space-between; align-items: center; margin: 30px 20px 15px; font-weight: 600; }
-  .patient-profile__h2__icon { transition: all .25s; fill: white; background: linear-gradient(45deg, rgb(52, 150, 255), rgb(0, 27, 182)); padding: 5px 3px 3px 5px; border-radius: 1000px; }
-  .patient-profile__h2__icon:active { transform: scale(.9); }
+  /* .patient-profile__h2__icon { transition: all .25s; fill: white; background: linear-gradient(45deg, rgb(52, 150, 255), rgb(0, 27, 182)); padding: 5px 3px 3px 5px; border-radius: 1000px; }
+  .patient-profile__h2__icon:active { transform: scale(.9); } */
 </style>
 
-
 <script>
-  import AppIcon from "./AppIcon.vue"
-  import PatientInputDate from "./PatientInputDate.vue"
-  import AppInputText from "./AppInputText.vue"
-  import { filter } from "lodash"
+  import { filter, forEach, maxBy } from "lodash"
+  import axios from "axios"
+  import AppInputInline from "./AppInputInline.vue";
+  import AppInputDate from "./AppInputDate.vue";
+  import AppInputSelectIndicator from "./AppInputSelectIndicator.vue";
+  import SubmitButton from "./SubmitButton.vue";
 
   export default {
     components: {
-      AppIcon,
-      PatientInputDate,
-      AppInputText,
+      AppInputSelectIndicator,
+      AppInputInline,
+      AppInputDate,
+      SubmitButton,
     },
     data: function() {
       return {
+        remote: null,
+        local: null,
         patient: null,
         observation: null,
         indicatorList: null,
-        indicatorAllList: null,
         attributeList: null,
-        sheet: null,
-        search: null,
-        indicatorCurrent: null,
+        modified: true,
+        evaluationList: null,
+        indicatorAttributeListValues: null,
       }
     },
-    computed: {
-      indicatorAttributeList() {
-        if (this.indicatorList && this.attributeList) {
-          return this.indicatorList.map((indicator) => {
+    watch: {
+      patient: {
+        handler(newValue, oldValue) {
+          if (oldValue) this.modified = true
+          if (oldValue != newValue) this.modified = false
+        },
+        deep: true,
+      },
+    },
+    mounted() {
+      Promise.all([
+        this.$store.dispatch("observationGet", this.$route.params.observation_id),
+        this.$store.dispatch("patientGet", this.$route.params.patient_id),
+        this.$store.dispatch("indicatorListGet", {observation_id: this.$route.params.observation_id, specialist_id: this.$store.state.specialist}),
+        this.$store.dispatch("attibuteListGet", this.$route.params.observation_id),
+        this.$store.dispatch("evaluationGet", this.$route.params.observation_id)
+      ]).then(values => {
+        [
+          this.observation,
+          this.patient,
+          this.indicatorList,
+          this.attributeList
+        ] = values.map(({data}) => data.data)
+        this.evaluationList = values[4].data.data
+        this.indicatorAttributeListValues = (() => {
+          let indicatorAttributeList = this.indicatorList.map((indicator) => {
             let a = this.attributeList.filter((attribute) => {
               return attribute['ИнтегральныйПоказатель'] == indicator['primaryKey']
             })
             indicator['Характеристики'] = a
             return indicator
           })
-        }
-      },
-    },
-    mounted() {
-      this.$store.dispatch("observationGet", this.$route.params.observation_id).then(data => {
-        this.observation = data
-      })
-      this.$store.dispatch("patientGet", this.$route.params.patient_id).then(data => {
-        this.patient = data
-      })
-      this.$store.dispatch("indicatorListGet", {observation_id: this.$route.params.observation_id, specialist_id: this.$store.state.specialist}).then(data => {
-        this.indicatorList = data
-      })
-      this.$store.dispatch("indicatorAllListGet", this.$route.params.observation_id).then(data => {
-        this.indicatorAllList = data
-      })
-      this.$store.dispatch("attibuteListGet", this.$route.params.observation_id).then(data => {
-        this.attributeList = data
+          return indicatorAttributeList.map(indicator => {
+            let evaluation = maxBy(filter(this.evaluationList, (ev) => {
+              return ev['ИнтегральныйПоказатель'] == indicator['primaryKey']
+            }), 'CreateTime')
+            indicator['ЗначениеПоказателя'] = evaluation ? evaluation['Характеристика'] : ''
+            return Object.assign({}, indicator)
+          })
+        })()
       })
     },
     methods: {
-      filter(list, id) {
-        return filter(list, (o) => {
-          return o['ИнтегральныйПоказатель'] == id
+      submit() {
+        forEach(this.indicatorAttributeListChanged, (object) => {
+          let body = {
+            observation_id: this.$route.params.observation_id,
+            indicator_id: object['primaryKey'],
+            attribute_id: object['ЗначениеПоказателя'],
+          }
+          console.log(body)
+          axios.post(`http://localhost:3000/evaluation`, body)
         })
-      },
-      indicatorAdd() {
-        this.sheet = true
-        // this.$refs['attribute-search'].focus()
-      },
-      isMatched(indicator) {
-        if (!this.search) return true
-        return (new RegExp(this.search.toLowerCase())).test(indicator['Наименование'].toLowerCase())
-      },
-      indicatorCurrentSet(indicator) {
-        this.search = indicator["Наименование"]
-        this.indicatorCurrent = indicator
-      },
-      attributeAdd(attribute) {
-        this.$store.dispatch("attributeAdd", {observation: this.$route.params.observation_id, attribute: attribute.primaryKey, indicator: attribute['ИнтегральныйПоказатель']}).then(data => {
-          this.sheet = null
-          this.indicatorCurrent = null
-          this.search = null
-          this.$store.dispatch("indicatorListGet", this.$route.params.observation_id).then(data => {
-            this.indicatorList = data
-          })
-        })
-      },
-      sheetClose() {
-        if (!this.indicatorCurrent) {
-          this.sheet = null
-        }
-        if (this.indicatorCurrent) {
-          this.indicatorCurrent = null
-          this.search = null
-        }
       },
     },
   }

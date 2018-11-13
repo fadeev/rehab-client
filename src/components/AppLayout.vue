@@ -1,7 +1,7 @@
 <template>
   <div>
     <transition-page>
-      <router-view></router-view>
+      <router-view :key="$route.name + ($route.params.id || '')"></router-view>
     </transition-page>
   </div>
 </template>
