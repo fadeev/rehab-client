@@ -18,7 +18,7 @@
     </transition>
     <div :class="['sheet', {'sheet--visible': sheet}]">
       <div class="sheet__header">
-        <input ref="search" class="sheet__header__input" :placeholder="label" v-model="search">
+        <input ref="search" class="sheet__header__input" :placeholder="label" :value="search" @input="search = $event.target.value">
         <div class="sheet__header__button" @click="clear">
           <AppIcon icon="x-mark-circle-thin-svg"></AppIcon>
         </div>

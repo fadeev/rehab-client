@@ -1,7 +1,7 @@
 <template>
   <div>
     <div :class="['app-input', {'app-input--expanded': expanded}]">
-      <div class="app-input__label" @click="sheet = !sheet; $refs.search.focus()">
+      <div class="app-input__label" @click="sheet = !sheet">
         {{label}}
       </div>
       <div class="app-input__selector">
@@ -29,7 +29,7 @@
     </transition>
     <div :class="['sheet', {'sheet--visible': sheet}]">
       <div class="sheet__header">
-        <input ref="search" class="sheet__header__input" :placeholder="label" v-model="search">
+        <input ref="search" class="sheet__header__input" :placeholder="label" :value="search" @input="search = $event.target.value">
         <div class="sheet__header__button" @click="clear">
           <AppIcon icon="x-mark-circle-thin-svg"></AppIcon>
         </div>

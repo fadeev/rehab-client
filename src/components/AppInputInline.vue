@@ -1,7 +1,7 @@
 <template>
   <div>
     <div :class="['app-input-inline', {'app-input-inline--large': large}]">
-      <textarea :placeholder="label" ref="textarea" class="text input" rows="1" :value="value" @input="valueUpdate"></textarea>
+      <textarea :placeholder="label" ref="textarea" class="text input" rows="2" :value="value" @input="valueUpdate"></textarea>
     </div>
   </div>
 </template>
@@ -33,9 +33,6 @@
     },
     mounted() {
       this.textareaGrow();
-      setTimeout(() => {
-        this.textareaGrow();
-      }, 100)
     },
     computed: {
       textareaStyle() {
@@ -44,8 +41,8 @@
     },
     methods: {
       valueUpdate(e) {
-        this.textareaGrow();
         this.$emit('input', e.target.value);
+        this.textareaGrow();
       },
       textareaGrow() {
         const paddingTop = parseInt(this.textareaStyle.getPropertyValue(`padding-top`), 10);
@@ -53,7 +50,7 @@
         const lineHeight = parseInt(this.textareaStyle.getPropertyValue(`line-height`), 10);
         this.$refs.textarea.rows = 1;
         const innerHeight = this.$refs.textarea.scrollHeight - paddingTop - paddingBottom;
-        this.$refs.textarea.rows = innerHeight / lineHeight;
+        this.$refs.textarea.rows = innerHeight / lineHeight + 1;
       },
     },
   }
