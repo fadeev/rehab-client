@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="patient-index">
     <app-header ref="search"
                 link="/patient"
                 v-model="search"
@@ -26,6 +26,7 @@
 </template>
 
 <style scoped>
+  .patient-index { background: white; }
   .app-header__item { align-items: center; padding: 20px; display: flex; justify-content: space-between; }
   .app-header__item__icon { height: 1em; margin: 0 5px; }
 </style>

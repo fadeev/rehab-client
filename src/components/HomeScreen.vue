@@ -3,13 +3,19 @@
     <div class="home-screen">
       <div class="home-screen__list">
         <router-link :to="'/patient'" tag='div' class="home-screen__list__item">
-          Пациенты
+          <div>
+            Пациенты
+          </div>
         </router-link>
         <router-link :to="'/specialist'" tag='div' class="home-screen__list__item">
-          Сотрудники
+          <div>
+            Сотрудники
+          </div>
         </router-link>
         <router-link :to="'/job'" tag='div' class="home-screen__list__item">
-          Должности
+          <div>
+            Должности
+          </div>
         </router-link>
       </div>
     </div>

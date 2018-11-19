@@ -4,7 +4,8 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-const url = "http://10.130.3.60:3000"
+const url = "http://localhost:3000"
+const odata = "http://ru:3103/odata"
 
 export default new Vuex.Store({
   strict: true,
@@ -29,6 +30,8 @@ export default new Vuex.Store({
       return axios.get(`${url}/patient/${id}`)
     },
     patientListGet({commit, state}) {
+      // axios.get(`${odata}/$metadata#IISRehabПациентs`)
+      // return axios.get(`${odata}/IISRehabПациентs?$select=primaryKey,ФИО,ДатаРождения`)
       return new Promise((resolve, reject) => {
         axios.get(`${url}/patient`).then(({data}) => {
           commit("patientListUpdate", data.data)

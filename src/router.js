@@ -23,17 +23,17 @@ export default new VueRouter({
     {
       path: '/',
       component: HomeScreen,
-      meta: { transitionName: 'slide-right' },
+      meta: { transitionName: 'slide-left' },
     },
     {
       path: '/patient',
       component: PatientIndex,
-      meta: { transitionName: 'slide' },
+      meta: { transitionName: 'slide-left' },
       children: [
         {
           path: '',
           component: PatientList,
-          meta: { transitionName: 'slide' },
+          meta: { transitionName: 'slide-right' },
           children: [
             {
               path: '',
