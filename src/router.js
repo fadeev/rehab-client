@@ -14,12 +14,29 @@ import JobList from "./components/JobList.vue"
 import JobProfile from "./components/JobProfile.vue"
 import IndicatorProfile from "./components/IndicatorProfile.vue"
 import IndicatorIndex from "./components/IndicatorIndex.vue"
-import PatientListMenu from "./components/PatientListMenu.vue";
+import PatientListMenu from "./components/PatientListMenu.vue"
+import EntityList from "./components/EntityList.vue"
+import EntityPage from "./components/EntityPage.vue"
+import EntityProfile from "./components/EntityProfile.vue"
 
 Vue.use(VueRouter)
 
 export default new VueRouter({
   routes: [
+    {
+      path: '/entity',
+      component: EntityList,
+    },
+    {
+      path: '/entity/:entity',
+      component: EntityPage,
+      props: true,
+    },
+    {
+      path: '/entity/:entity/:id',
+      component: EntityProfile,
+      props: true,
+    },
     {
       path: '/',
       component: HomeScreen,

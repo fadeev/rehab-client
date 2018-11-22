@@ -2,7 +2,7 @@
   <div>
     <div class="job-list">
       <router-link tag="div"
-                   :to="`/job/${job['primaryKey']}`"
+                   :to="`/job/${job['__PrimaryKey']}`"
                    class="app-list__item"
                    v-for="job in jobListFiltered"
                    :key="job['primaryKeyFiltered']">
@@ -43,8 +43,8 @@
       },
     },
     created() {
-      this.$store.dispatch('jobListGet').then(data => {
-        this.jobList = [...data]
+      this.$store.dispatch('jobListGet').then(({data}) => {
+        this.jobList = data.value
       })
     }
   }

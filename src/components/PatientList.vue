@@ -102,17 +102,17 @@
       click(patient) {
         if (this.selectMode) {
           this.selectedList = this.selectedList || []
-          if (includes(this.selectedList, patient.primaryKey)) {
-            this.selectedList = filter(this.selectedList, o => o != patient.primaryKey)
+          if (includes(this.selectedList, patient['__PrimaryKey'])) {
+            this.selectedList = filter(this.selectedList, o => o != patient['__PrimaryKey'])
           } else {
-            this.selectedList = union(this.selectedList, [patient.primaryKey])
+            this.selectedList = union(this.selectedList, [patient['__PrimaryKey']])
           }
           return
         }
-        this.$router.push(`/patient/${patient.primaryKey}`)
+        this.$router.push(`/patient/${patient['__PrimaryKey']}`)
       },
       selected(patient) {
-        return includes(this.selectedList, patient.primaryKey)
+        return includes(this.selectedList, patient['__PrimaryKey'])
       },
     },
   }

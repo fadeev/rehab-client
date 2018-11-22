@@ -2,7 +2,7 @@
   <div>
     <div class="observation-profile" v-if="observation && patient">
       <div class="observation-profile__h1">
-        <router-link style="color: rgba(0,122,255,1);" tag="div" :to="`/patient/${patient.primaryKey}`">
+        <router-link style="color: rgba(0,122,255,1);" tag="div" :to="`/patient/${patient['__PrimaryKey']}`">
           {{patient['ФИО']}}
         </router-link>
       </div>
@@ -101,6 +101,8 @@
           this.indicatorList,
           this.attributeList
         ] = values.map(({data}) => data.data)
+        this.observation = values[0].data
+        this.patient = values[1].data
         this.evaluationList = values[4].data.data
         this.indicatorAttributeListValues = (() => {
           let indicatorAttributeList = this.indicatorList.map((indicator) => {

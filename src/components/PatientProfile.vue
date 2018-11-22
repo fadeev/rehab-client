@@ -35,8 +35,8 @@
           <AppIcon class="patient-profile__h2__icon" icon='plus'></AppIcon>
         </div>
       </div>
-      <div class="app-list__item" v-for="observation in observationList" :key="observation.primaryKey">
-        <router-link tag="div" :to="`/patient/${patient.primaryKey}/observation/${observation.primaryKey}`">
+      <div class="app-list__item" v-for="observation in observationList" :key="observation['__PrimaryKey']">
+        <router-link tag="div" :to="`/patient/${patient['__PrimaryKey']}/observation/${observation['__PrimaryKey']}`">
           № {{observation['Номер']}} от {{observation['Дата'].substring(0,10)}}
         </router-link>
       </div>
@@ -97,21 +97,21 @@
       patientGet() {
         this.$store.dispatch("patientGet", this.$route.params.patient_id)
           .then(({data}) => {
-            this.patient = Object.assign({}, data.data)
+            this.patient = Object.assign({}, data)
           }, () => {
             this.new = true
           })
       },
       patientObservationListGet() {
-        this.$store.dispatch("patientObservationListGet", this.$route.params.patient_id).then(data => {
-          this.observationList = Object.assign({}, data)
+        this.$store.dispatch("patientObservationListGet", this.$route.params.patient_id).then(({data}) => {
+          this.observationList = Object.assign({}, data.value)
         }).catch(error => {
         })
       },
       submit() {
         this.$store.dispatch((this.new ? "patientCreate" : 'patientUpdate'), this.patient).then(data => {
           if (this.new) {
-            this.$router.push(`/patient/${data['primaryKey']}`)
+            this.$router.push(`/patient/${data['__PrimaryKey']}`)
           } else {
             this.patientGet()
           }
@@ -120,7 +120,7 @@
       observationAdd() {
         this.$store.dispatch("observationAdd", this.patient.primaryKey).then((data) => {
           this.patientObservationListGet()
-          this.$router.push(`/patient/${this.patient.primaryKey}/observation/${data.primaryKey}`)
+          this.$router.push(`/patient/${this.patient['__PrimaryKey']}/observation/${data['__PrimaryKey']}`)
         })
       },
     },

@@ -53,9 +53,11 @@
         })
       },
       attributeListGet() {
-        this.$store.dispatch('attibuteListGet').then(({data}) => {
-          this.attributeList = data.data.filter(object => {
-            return object['ИнтегральныйПоказатель'] == this.$route.params.indicator_id
+        this.$store.dispatch('attributeListGet').then(({data}) => {
+          this.attributeList = data.value.filter(object => {
+            if (object['ИнтегральныйПоказатель']) {
+              return object['ИнтегральныйПоказатель']['__PrimaryKey'] == this.$route.params.indicator_id
+            }
           })
         })
       },

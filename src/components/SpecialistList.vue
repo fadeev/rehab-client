@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="specialist-list">
-      <router-link class="app-list__item" tag="div" :to="`/specialist/${specialist['primaryKey']}`" v-for="specialist in specialistListFiltered" :key="specialist['primaryKey']">
+      <router-link class="app-list__item" tag="div" :to="`/specialist/${specialist['__PrimaryKey']}`" v-for="specialist in specialistListFiltered" :key="specialist['__PrimaryKey']">
         {{specialist['ФИО'] || 'n/a'}}
       </router-link>
     </div>

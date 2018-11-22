@@ -7,6 +7,8 @@ import App from './App.vue'
 
 Vue.config.productionTip = false
 
+store.dispatch("metadataFetch")
+
 new Vue({
   router,
   store,

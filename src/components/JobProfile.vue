@@ -6,8 +6,8 @@
         Показатели
       </div>
       <router-link tag="div"
-                   :to="`/indicator/${indicator['primaryKey']}`"
-                   :key="indicator['primaryKey']"
+                   :to="`/indicator/${indicator['__PrimaryKey']}`"
+                   :key="indicator['__PrimaryKey']"
                    class="app-list__item"
                    v-for="indicator in indicatorList">
         {{indicator['Наименование']}}
@@ -44,14 +44,16 @@
     },
     methods: {
       jobGet() {
-        this.$store.dispatch("jobGet", this.$route.params.job_id).then(data => {
+        this.$store.dispatch("jobGet", this.$route.params.job_id).then(({data}) => {
           this.job = data
         })
       },
       indicatorAllListGet() {
-        this.$store.dispatch("indicatorAllListGet").then(data => {
-          this.indicatorList = data.filter(object => {
-            return object['Сотрудник'] == this.$route.params.job_id
+        this.$store.dispatch("indicatorAllListGet").then(({data}) => {
+          this.indicatorList = data.value.filter(object => {
+            if (object['Сотрудник']) {
+              return object['Сотрудник']['__PrimaryKey'] == this.$route.params.job_id
+            }
           })
         })
       },

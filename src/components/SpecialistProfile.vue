@@ -5,7 +5,7 @@
       <AppInput label="Код" v-model="specialist['Код']" style="margin: 0 10px"></AppInput>
       <AppInput label="Логин" v-model="specialist['Логин']" style="margin: 0 10px"></AppInput>
       <AppInputInline label="Примечание" style="margin: 0 10px" v-model="specialist['Примечание']"></AppInputInline>
-      <AppInputSelect label="Должность" style="margin: 0 10px" placeholder="Выбрать" v-model="specialist['Должность_m0']" :options="jobList" key-field='Наименование' value-field='primaryKey'></AppInputSelect>
+      <AppInputSelect label="Должность" style="margin: 0 10px" placeholder="Выбрать" v-model="specialist['Должность_m0']" :options="jobList" key-field='Наименование' value-field='__PrimaryKey'></AppInputSelect>
       <AppInputSelect label="Подразделение" style="margin: 0 10px" placeholder="Выбрать" v-model="specialist['Подразделение']" :options="divisionList" key-field='Наименование' value-field='primaryKey'></AppInputSelect>
       <AppInputToogle label="Актуально" v-model="specialist['Актуально']" style="margin: 0 10px"></AppInputToogle>
       <SubmitButton @click="submit" :visible="specialistModified"></SubmitButton>
@@ -38,8 +38,8 @@
     },
     async created() {
       this.specialistGet()
-      this.$store.dispatch("jobListGet").then(data => {
-        this.jobList = Object.assign({}, data)
+      this.$store.dispatch("jobListGet").then(({data}) => {
+        this.jobList = Object.assign({}, data.value)
       })
       this.$store.dispatch("divisionListGet").then(data => {
         this.divisionList = Object.assign({}, data)
