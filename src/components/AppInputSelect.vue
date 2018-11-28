@@ -33,10 +33,11 @@
 <style scoped>
   .app-input { box-sizing: border-box; justify-content: space-between; display: flex; width: 100%; border-radius: 5px; padding: 10px; transition: background-color .25s, color .25s; }
   .app-input__label, .app-input__input { width: 50%; }
-  .app-input__input { text-align: right; }
+  .app-input__label { overflow-x: hidden; }
+  .app-input__input { text-align: right; background: white; transition: background-color .25s, color .25s; }
   .app-input--expanded { background: rgb(255, 253, 112); color: rgb(43, 32, 0); }
   .app-input__placeholder { color: rgba(0,0,0,.35); }
-  .app-input:active { background: rgb(255, 253, 112); }
+  .app-input:active, .app-input:active .app-input__input { background: rgb(255, 253, 112); }
 
   .overlay { z-index: 400; background: rgba(0,0,0,1); top: 0; left: 0; bottom: 0; right: 0; position: fixed; }
 
@@ -44,7 +45,7 @@
   .fade-enter, .fade-leave-to { opacity: 0; }
   .fade-enter-to, .fade-leave { opacity: .5; }
 
-  .sheet { z-index: 500; overflow-y: scroll; transition: transform .75s cubic-bezier(0.55, 0, 0.1, 1); transform: translateY(100vh); left: 0; right: 0; background: white; bottom: 0; position: fixed; top: 0; }
+  .sheet { z-index: 500; overflow-y: scroll; transition: transform .75s cubic-bezier(0.55, 0, 0.1, 1); transform: translateY(120vh); left: 0; right: 0; background: white; bottom: 0; position: fixed; top: 0; }
   .sheet--visible { transform: translateY(0); }
   .sheet__header { display: flex; align-items: center; padding: 10px; text-align: right; }
   .sheet__header__input { box-sizing: border-box; width: 100%; padding: 10px; border-radius: 3px; border: 1px solid rgba(0,0,0,.2); }
@@ -73,7 +74,7 @@
       optionsValue() {
         let res = find(this.options, (object) => {
           if (object[this.valueField])
-            return object[this.valueField] == this.value
+            return object[this.valueField].toLowerCase() == this.value.toLowerCase()
         })
         if (res)
           return res[[this.keyField]]

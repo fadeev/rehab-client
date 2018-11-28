@@ -16,8 +16,8 @@ import IndicatorProfile from "./components/IndicatorProfile.vue"
 import IndicatorIndex from "./components/IndicatorIndex.vue"
 import PatientListMenu from "./components/PatientListMenu.vue"
 import EntityList from "./components/EntityList.vue"
-import EntityPage from "./components/EntityPage.vue"
-import EntityProfile from "./components/EntityProfile.vue"
+import EntityCollection from "./components/EntityCollection.vue"
+import EntityItem from "./components/EntityItem.vue"
 
 Vue.use(VueRouter)
 
@@ -26,16 +26,29 @@ export default new VueRouter({
     {
       path: '/entity',
       component: EntityList,
+      props: route => ({
+        entityInclude: ["ВидДиагноза", "Сотрудник", "Пациент"],
+      }),
     },
     {
-      path: '/entity/:entity',
-      component: EntityPage,
-      props: true,
+      path: '/entity/:entityId',
+      component: EntityCollection,
+      props: route => ({
+        entityId: route.params.entityId,
+        propInclude: {
+          'Пациент': ['__PrimaryKey', 'ФИО'],
+        },
+        nameOrder: ['Наименование', 'ФИО', '__PrimaryKey'],
+      }),
     },
     {
-      path: '/entity/:entity/:id',
-      component: EntityProfile,
-      props: true,
+      path: '/entity/:entityId/:itemId',
+      component: EntityItem,
+      props: route => ({
+        entityId: route.params.entityId,
+        itemId: route.params.itemId,
+        propExclude: ['@odata.context', 'CreateTime', 'Creator', 'EditTime', 'Editor', '__PrimaryKey'],
+      }),
     },
     {
       path: '/',

@@ -92,7 +92,7 @@
         this.$store.dispatch("observationGet", this.$route.params.observation_id),
         this.$store.dispatch("patientGet", this.$route.params.patient_id),
         this.$store.dispatch("indicatorListGet", {observation_id: this.$route.params.observation_id, specialist_id: this.$store.state.specialist}),
-        this.$store.dispatch("attibuteListGet", this.$route.params.observation_id),
+        this.$store.dispatch("attributeListGet", this.$route.params.observation_id),
         this.$store.dispatch("evaluationGet", this.$route.params.observation_id)
       ]).then(values => {
         [

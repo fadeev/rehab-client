@@ -13,10 +13,12 @@
 
 <style scoped>
   .app-input { border-radius: 5px; padding: 10px; transition: background-color .25s, color .25s; }
+  .app-input__label { overflow-x: hidden; }
   .app-input--expanded { background: rgb(255, 253, 112); color: rgb(43, 32, 0); }
   /* .app-input__label1 { background: green; }
   .app-input__input1 { background: red; } */
-  .app-input__input { text-align: right; max-width: 50%; overflow-x: hidden; right: 0; width: initial; position: absolute; top: 0; padding: 0; border: none; }
+  .app-input__input { transition: background-color .25s, color .25s; background: white; text-align: right; max-width: 50%; overflow-x: hidden; right: 0; width: initial; position: absolute; top: 0; padding: 0; border: none; }
+  .app-input--expanded .app-input__input { background: rgb(255, 253, 112); }
 </style>
 
 
