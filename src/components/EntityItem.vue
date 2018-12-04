@@ -2,15 +2,7 @@
   <div>
     <component v-if="customComponent" :is="customComponent"/>
     <div v-if="!customComponent">
-      <router-link :to="`/entity`" tag="h2" class="link">
-        Перечень сущностей
-      </router-link>
-      <router-link :to="`/entity/${entityId}`" tag="h2" class="link">
-        Перечень {{entityId.replace(/([а-я](?=[А-Я]))/g, '$1 ')}}
-      </router-link>
-      <h2>
-        {{entityId.replace(/([а-я](?=[А-Я]))/g, '$1 ')}}
-      </h2>
+      <base-header v-model="mode" :options="options"/>
       <div v-if="!propExclude || (propExclude && !includes(propExclude, key))" style="margin: 10px;" v-for="(value, key) in collection" :key="key">
         <component v-if="isCustomComponent(propType(key))" :value="value" :label="key" v-model="collection[key]" :is="propType(key)"/>
         <app-input-select :options="isEnum(key).options"
@@ -19,26 +11,18 @@
                           value-field="name"
                           v-model="collection[key]"
                           placeholder="Выбрать"
-                          :label="key"></app-input-select>
+                          :label="key">
+        </app-input-select>
         <app-input v-else :label="key" v-model="collection[key]"/>
-        <!-- <div>{{propType(key)}}</div> -->
-        <!-- <app-input v-if="!isEnum(key)" :label="key" v-model="collection[key]"/>
-        <div>{{propType(key)}}</div>
-        <app-input-select :options="isEnum(key).options"
-                          v-if="isEnum(key)"
-                          key-field="name"
-                          value-field="value"
-                          v-model="collection[key]"
-                          :label="key"></app-input-select> -->
       </div>
-      <submit-button :visible="collectionChanged"/>
     </div>
   </div>
 </template>
 
 <style scoped>
-  h2 { margin: 20px; }
-  .link { color: rgba(0,122,255,1); }
+  .fade-enter-active, .fade-leave-active { transition: opacity .5s; }
+  .fade-enter, .fade-leave-to { opacity: 0; }
+  .fade-enter-to, .fade-leave { opacity: .5; }
 </style>
 
 <script>
@@ -55,17 +39,21 @@
       return {
         collection: null,
         collectionOriginal: null,
+        mode: null,
+        options: {
+          back: true,
+        },
       }
     },
-    async created() {
-      this.collection = await this.entityItemFetch(this.entity)
-      this.collectionOriginal = await this.entityItemFetch(this.entity)
+    watch: {
+      entity: {
+        handler: async function(newValue, oldValue) {
+          this.collection = await this.entityItemFetch(newValue)
+          this.collectionOriginal = await this.entityItemFetch(newValue)
+        },
+        immediate: true,
+      },
     },
-    // watch: {
-    //   entity: async function(newValue, oldValue) {
-    //     this.collection = await this.entityItemFetch(newValue)
-    //   },
-    // },
     computed: {
       collectionChanged() {
         return !isEqual(this.collection, this.collectionOriginal)

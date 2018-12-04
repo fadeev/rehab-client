@@ -7,7 +7,7 @@
       <router-link tag="div"
                    v-if="!entityInclude || (entityInclude && includes(entityInclude, entity.type))"
                    :to="`/entity/${entity.type}`"
-                   class="app-list__item"
+                   class="entity-list__item"
                    v-for="entity in entityList"
                    :key="entity.type">
         {{entity.type.replace(/([а-я](?=[А-Я]))/g, '$1 ')}}
@@ -15,6 +15,10 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+  .entity-list__item { margin: 5px 10px; padding: 10px; }
+</style>
 
 <script>
   import { mapGetters } from 'vuex'

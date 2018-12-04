@@ -36,7 +36,7 @@
 </template>
 
 <style scoped>
-  .app-input-date { border-radius: 5px; box-sizing: border-box; padding: 10px; transition: background-color .25s, color .25s; justify-content: space-between; align-items: center; width: 100%; display: flex; }
+  .app-input-date { overflow-y: hidden; border-radius: 5px; box-sizing: border-box; padding: 10px; transition: background-color .25s, color .25s; justify-content: space-between; align-items: center; width: 100%; display: flex; }
   .app-input--expanded { background: rgb(255, 253, 112); color: rgb(43, 32, 0); }
   .app-input__label { flex-grow: 1; }
 

@@ -13,7 +13,7 @@
 </template>
 
 <style scoped>
-  .app-input-toggle { border-radius: 5px; height: inherit; box-sizing: border-box; justify-content: space-between; align-items: center; width: 100%; display: flex; padding: 10px; }
+  .app-input-toggle { overflow-x: hidden; border-radius: 5px; height: inherit; box-sizing: border-box; justify-content: space-between; align-items: center; width: 100%; display: flex; padding: 10px; }
   .app-input-toggle:active { background: rgb(255, 253, 112); color: rgb(43, 32, 0); }
 
   .zoom-enter-active, .zoom-leave-active { transition: all .15s }
