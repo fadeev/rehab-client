@@ -1,47 +1,39 @@
 <template>
   <div>
-    <div :class="['app-input-toggle']" @click="valueUpdate(!value)">
-      <div class="app-input-toggle__label">
-        {{label}}
+    <div class="base-input" @click="$emit('input', !value)">
+      <div class="base-input__label">
+        <div class="base-input__label__text">
+          <!-- <transition name="appear">
+            <div v-if="value">{{label}} &nbsp;</div>
+          </transition> -->
+        </div>
       </div>
-      <transition name="zoom" mode="out-in">
-        <AppIcon class="app-input-toggle__button" v-if="value" icon="check-mark-circle-thin-svg" key="on"></AppIcon>
-        <AppIcon class="app-input-toggle__button" v-if="!value" icon="circle-6-svg" key="off"></AppIcon>
-      </transition>
+      <div class="base-input__input">
+        <div>{{label.replace(/([а-я](?=[А-Я]))/g, '$1 ')}}</div>
+        <app-icon v-if="value" class="base-input__input__checkbox" :size="25" style="fill: rgba(0,0,0,1);" icon="checkbox-9-svg"/>
+        <app-icon v-else class="base-input__input__checkbox" :size="25" style="fill: rgba(0,0,0,.15);" icon="checkbox-11-svg"/>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-  .app-input-toggle { overflow-x: hidden; border-radius: 5px; height: inherit; box-sizing: border-box; justify-content: space-between; align-items: center; width: 100%; display: flex; padding: 10px; }
-  .app-input-toggle:active { background: rgb(255, 253, 112); color: rgb(43, 32, 0); }
+  .base-input { overflow-x: hidden; position: relative; }
+  .base-input__label { color: rgba(0,0,0,.35); font-size: .65em; position: relative; overflow: hidden; }
+  .base-input__label__text { background: white; display: inline-block; }
+  .base-input__label:after { content: ''; top: 45%; position: absolute; background: rgba(0,0,0,.15); height: 1px; width: 100%; }
+  .base-input__input { display: flex; align-content: center; background: transparent; padding: .35em 0 .5em; margin: 0; border: none; justify-content: space-between; }
+  .base-input__input__checkbox { background: white; box-shadow: 0 0 0 5px white; flex-shrink: 0; }
+  /* .base-input__input { position: relative; display: flex; align-content: center; background: transparent; padding: .35em 0 .5em; margin: 0; border: none; width: 100%; }
+  .base-input__input__checkbox { position: absolute; right: 0; top: 0; background: white; box-shadow: 0 0 0 5px white; } */
 
-  .zoom-enter-active, .zoom-leave-active { transition: all .15s }
-  .zoom-enter, .zoom-leave-to { transform: scale(.9); }
-  .zoom-enter-to, .zoom-leave { transform: scale(1); }
-
-  .app-input-toggle__button { transition: transform .15s; }
-  .app-input-toggle__button:active { transform: scale(.9); }
+  .appear-enter-active { transition: all 5s; }
+  .appear-enter { color: black; }
+  .appear-enter-to { color: rgba(0,0,0,.35); }
 </style>
 
-
 <script>
-  import AppIcon from "./AppIcon.vue"
-
   export default {
-    components: {
-      AppIcon,
-    },
-    props: [ 'value', 'label', ],
-    data: function() {
-      return {
-        expanded: null,
-      }
-    },
-    methods: {
-      valueUpdate(e) {
-        this.$emit('input', e);
-      },
-    },
+    props: ['value', 'label'],
   }
 </script>

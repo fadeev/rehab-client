@@ -21,18 +21,21 @@
 </style>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapState } from 'vuex'
   import { includes } from 'lodash'
 
   export default {
-    props: {
-      entityInclude: {
-        type: Array,
-      },
-    },
+    // props: {
+    //   entityInclude: {
+    //     type: Array,
+    //   },
+    // },
     computed: {
       ...mapGetters([
         'entityList',
+      ]),
+      ...mapState([
+        'entityInclude',
       ]),
     },
     methods: {

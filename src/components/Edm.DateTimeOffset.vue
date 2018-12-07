@@ -1,9 +1,15 @@
 <template>
   <div>
-    <div :class="['app-input-date', {'app-input--expanded': expanded}]">
-      <div class="app-input__label" @click="dayFocus">
-        {{label}}
+    <div class="base-input">
+      <div class="base-input__label">
+        <div class="base-input__label__text">
+          <transition name="appear">
+            <div>{{label}} &nbsp;</div>
+          </transition>
+        </div>
       </div>
+    </div>
+    <div :class="['app-input-date', {'app-input--expanded': expanded}]">
       <div class="app-input" @keyup.capture="updateValue">
         <input class="app-input__input app-input--day"
                v-model="day"
@@ -36,8 +42,12 @@
 </template>
 
 <style scoped>
-  .app-input-date { overflow-y: hidden; border-radius: 5px; box-sizing: border-box; padding: 10px; transition: background-color .25s, color .25s; justify-content: space-between; align-items: center; width: 100%; display: flex; }
-  .app-input--expanded { background: rgb(255, 253, 112); color: rgb(43, 32, 0); }
+  .base-input__label { color: rgba(0,0,0,.35); font-size: .65em; position: relative; overflow: hidden; }
+  .base-input__label__text { display: inline-block; }
+  .base-input__label:after { content: ''; top: 45%; position: absolute; background: rgba(0,0,0,.15); height: 1px; width: 100%; }
+  .base-input__input { background: transparent; padding: .35em 0 .5em; margin: 0; border: none; width: 100%; }
+
+  .app-input-date { border-radius: 5px; box-sizing: border-box; padding: 10px 0; transition: background-color .25s, color .25s; justify-content: space-between; align-items: center; width: 100%; display: flex; }
   .app-input__label { flex-grow: 1; }
 
   .app-input { white-space: nowrap; border-radius: 5px; }

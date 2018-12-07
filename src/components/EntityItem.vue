@@ -3,19 +3,19 @@
     <component v-if="customComponent" :is="customComponent"/>
     <div v-if="!customComponent">
       <base-header v-model="mode" :options="options"/>
-      <div v-if="!propExclude || (propExclude && !includes(propExclude, key))" style="margin: 10px;" v-for="(value, key) in collection" :key="key">
+      <div v-if="!propExclude || (propExclude && !includes(propExclude, key))" style="margin: 0 20px;" v-for="(value, key) in collection" :key="key">
         <component v-if="isCustomComponent(propType(key))" :value="value" :label="key" v-model="collection[key]" :is="propType(key)"/>
-        <app-input-select :options="isEnum(key).options"
-                          v-else-if="isEnum(key)"
-                          key-field="name"
-                          value-field="name"
-                          v-model="collection[key]"
-                          placeholder="Выбрать"
-                          :label="key">
-        </app-input-select>
-        <app-input v-else :label="key" v-model="collection[key]"/>
+        <base-input-select :options="isEnum(key).options"
+                           v-else-if="isEnum(key)"
+                           key-field="name"
+                           value-field="name"
+                           v-model="collection[key]"
+                           placeholder="Выбрать"
+                           :label="key"/>
+        <base-input v-else :label="key" v-model="collection[key]"/>
       </div>
     </div>
+    <base-submit :visible="collectionChanged"/>
   </div>
 </template>
 
@@ -32,9 +32,9 @@
   import Vue from 'vue'
 
   export default {
-    props: [
-      'entityId', 'itemId', 'propExclude',
-    ],
+    // props: [
+    //   'propExclude',
+    // ],
     data: function() {
       return {
         collection: null,
@@ -48,13 +48,22 @@
     watch: {
       entity: {
         handler: async function(newValue, oldValue) {
-          this.collection = await this.entityItemFetch(newValue)
-          this.collectionOriginal = await this.entityItemFetch(newValue)
+          if (newValue) {
+            let x = await this.entityItemFetch(newValue)
+            this.collection = Object.assign({}, x)
+            this.collectionOriginal = Object.assign({}, x)
+          }
         },
         immediate: true,
       },
     },
     computed: {
+      entityId() {
+        return this.$route.params.entityId
+      },
+      itemId() {
+        return this.$route.params.itemId
+      },
       collectionChanged() {
         return !isEqual(this.collection, this.collectionOriginal)
       },
@@ -71,7 +80,7 @@
         return this.$store.getters.enumTypes
       },
       ...mapState([
-        'url',
+        'url', 'propExclude',
       ]),
     },
     methods: {

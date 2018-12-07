@@ -17,6 +17,13 @@ export default new Vuex.Store({
     metadata: null,
     url: 'http://ru:3103/odata/IISRehab',
     entityCollection: {},
+    mobile: true,
+    entityInclude: ["ВидДиагноза", "Сотрудник", "Пациент"],
+    propInclude: {
+      'Пациент': ['__PrimaryKey', 'ФИО'],
+    },
+    nameOrder: ['Наименование', 'ФИО', 'Описание', '__PrimaryKey'],
+    propExclude: ['@odata.context', 'CreateTime', 'Creator', 'EditTime', 'Editor', '__PrimaryKey'],
   },
   getters: {
     entityCollectionGet: (state) => (entityId) => {

@@ -1,17 +1,21 @@
 <template>
   <div>
     <div class="entity-collection">
-      <base-header v-model="mode" :options="options" @search="search"/>
+      <base-header v-model="mode" :options="options" @search="search">
+        <div style="margin: 20px;" @click="tableConvert">
+          Сохранить в виде таблицы
+        </div>
+      </base-header>
       <h2 style="margin: 20px;">
         {{entityId.replace(/([а-я](?=[А-Я]))/g, '$1 ')}}
       </h2>
       <transition name="fade">
         <div v-if="collection">
           <router-link tag="div"
-                      class="entity-collection__item"
-                      :to="`/entity/${entityId}/${item['__PrimaryKey']}`"
-                      v-for="item in collectionFiltered"
-                      :key="item['__PrimaryKey']">
+                       class="entity-collection__item"
+                       :to="`/entity/${entityId}/${item['__PrimaryKey']}`"
+                       v-for="item in collectionFiltered"
+                       :key="item['__PrimaryKey']">
             <div>{{item[find(nameOrder, i => item[i])]}}</div>
             <div @click.prevent="itemSelect(item)" class="entity-collection__item__icon" :style="{zIndex: 0, marginLeft: 'auto', opacity: mode == 'select' ? 1 : 0, transform: `translateX(${mode == 'select' ? 0 : '25%'})`}">
               <app-icon v-if="!find(itemSelectedList, item)" style="fill: rgba(0,0,0,.25)" icon="circle-6-svg"/>
@@ -37,20 +41,21 @@
   import { mapState } from 'vuex'
   import axios from "axios"
   import { find, take, findIndex, indexOf } from 'lodash'
+  import XLSX from 'xlsx'
 
   export default {
-    props: {
-      entityId: {
-        type: String,
-      },
-      propInclude: {
-        type: Object,
-      },
-      nameOrder: {
-        type: Array,
-        default: () => ['__PrimaryKey', 'id', 'ID', 'uuid', 'UUID', 'guid', 'GUID'],
-      },
-    },
+    // props: {
+    //   entityId: {
+    //     type: String,
+    //   },
+    //   propInclude: {
+    //     type: Object,
+    //   },
+    //   nameOrder: {
+    //     type: Array,
+    //     default: () => ['__PrimaryKey', 'id', 'ID', 'uuid', 'UUID', 'guid', 'GUID'],
+    //   },
+    // },
     data: function() {
       return {
         mode: null,
@@ -65,8 +70,11 @@
     },
     computed: {
       ...mapState([
-        'url'
+        'url', 'propInclude', 'nameOrder',
       ]),
+      entityId() {
+        return this.$route.params.entityId
+      },
       collection() {
         return this.$store.getters.entityCollectionGet(this.entityId)
       },
@@ -100,6 +108,7 @@
         this.$store.dispatch('entityCollectionFetch', {url, entityId: this.entityId})
       },
       itemSelect(item) {
+        if (this.mode != 'select') return
         if (!this.itemSelectedList) this.itemSelectedList = []
         if (!find(this.itemSelectedList, item)) {
           this.itemSelectedList.push(item)
@@ -109,6 +118,12 @@
       },
       search(search) {
         this.searchString = search
+      },
+      tableConvert() {
+        let wb = XLSX.utils.book_new()
+        let ws = XLSX.utils.json_to_sheet(this.collection)
+        XLSX.utils.book_append_sheet(wb, ws, 'ws_name')
+        XLSX.writeFile(wb, 'filename.xls')
       },
     },
   }

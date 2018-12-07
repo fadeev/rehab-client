@@ -1,15 +1,17 @@
 <template>
   <div>
-    <transition-page>
-      <router-view :key="$route.name + ($route.params.id || '')"></router-view>
-    </transition-page>
+    <component :is="`app-layout-${mobile ? 'small' : 'large'}`"/>
   </div>
 </template>
 
 <script>
-  import TransitionPage from "./TransitionPage.vue"
+  import { mapState } from "vuex";
 
   export default {
-    components: { TransitionPage, },
+    computed: {
+      ...mapState([
+        'mobile',
+      ]),
+    },
   }
 </script>

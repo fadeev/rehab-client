@@ -37,15 +37,15 @@
     </div>
     <transition name="slide">
       <div class="base-header__menu" v-if="value == 'menu'">
-        <div>Menu</div>
+        <slot/>
       </div>
     </transition>
   </div>
 </template>
 
 <style scoped>
-  .base-header__menu { z-index: 100; background: white; position: absolute; left: 0; right: 0; }
-  .base-header__overlay { background: rgba(0,0,0,.75); position: absolute; left: 0; right: 0; top: 0; bottom: 0; }
+  .base-header__menu { z-index: 100; background: white; position: absolute; left: 0; right: 0; width: 100%; }
+  .base-header__overlay { background: rgba(0,0,0,.75); z-index: 50; position: fixed; left: 0; right: 0; top: 0; bottom: 0; }
   .base-header { z-index: 200; background: white; position: relative; display: flex; padding: 10px; left: 0; right: 0; justify-content: flex-start; box-sizing: border-box; }
   .base-header__icon { padding: 10px; }
   .base-header__search__input { background: white; border: none; padding-left: 10px; }
